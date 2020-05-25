@@ -51,18 +51,36 @@ exports.findTitle = (req, res) => {
 
 // Retrieve all font from the database.
 exports.findAll = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
+    
+    const myCustomLabels = {
+        totalDocs: 'totalFonts',
+        docs: 'data',
+        limit: 'limit',
+        page: 'currentPage',
+        nextPage: 'next',
+        prevPage: 'prev',
+        totalPages: 'totalPages',
+        pagingCounter: 'pagingCounter',
+        //meta: 'paginator'
+    };
 
-    Font.find(condition)
-        .then(data => {
-        res.send(data);
-        })
-        .catch(err => {
-        res.status(500).send({
-            message:
-            err.message || "Some error occurred while retrieving fonts."
-        });
+    const options = {
+        page: req.params.page || 1,
+        limit: 20,
+        collation: {
+          locale: 'pt'
+        },
+        sort: {createdAt: -1},
+        customLabels: myCustomLabels
+    };
+ 
+    Font.paginate({}, options, function(err, result) {
+        if (err) {
+            return next(err);
+        }
+        else{
+            res.send(result);
+        }
     });
 };
 
