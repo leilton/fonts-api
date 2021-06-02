@@ -36,11 +36,10 @@ exports.create = (req, res) => {
 exports.findTitle = (req, res) => {
     const title = req.params.title;
 
-    Font.find({ title: title})
+    Font.find({ title: title })
         .then(data => {
-        if (!data)
-            res.status(404).send({ message: "Not found font with title " + title });
-        else res.send(data);
+            if (data.length == 0) res.status(404).send({ message: "Not found font with title " + title });
+            else res.send(data);
         })
         .catch(err => {
         res
@@ -51,7 +50,7 @@ exports.findTitle = (req, res) => {
 
 // Retrieve all font from the database.
 exports.findAll = (req, res) => {
-    
+
     const myCustomLabels = {
         totalDocs: 'totalFonts',
         docs: 'data',
@@ -90,7 +89,7 @@ exports.findOne = (req, res) => {
 
     Font.findById(id)
         .then(data => {
-        if (!data)
+        if (data.length == 0)
             res.status(404).send({ message: "Not found font with id " + id });
         else res.send(data);
         })
@@ -113,7 +112,7 @@ exports.update = (req, res) => {
 
     Font.findOneAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
-        if (!data) {
+        if (data.length == 0) {
             res.status(404).send({
             message: `Cannot update font with id=${id}. Maybe font was not found!`
             });
@@ -132,7 +131,7 @@ exports.delete = (req, res) => {
 
     Font.findOneAndRemove(id)
         .then(data => {
-        if (!data) {
+        if (data.length == 0) {
             res.status(404).send({
             message: `Cannot delete font with id=${id}. Maybe font was not found!`
             });
@@ -166,15 +165,96 @@ exports.deleteAll = (req, res) => {
 };
 
 // Find all published font
-exports.findAllPublished = (req, res) => {
-    Font.find({ published: true })
+exports.findPublished = (req, res) => {
+
+    const myCustomLabels = {
+        totalDocs: 'totalFonts',
+        docs: 'data',
+        limit: 'limit',
+        page: 'currentPage',
+        nextPage: 'next',
+        prevPage: 'prev',
+        totalPages: 'totalPages',
+        pagingCounter: 'pagingCounter',
+        //meta: 'paginator'
+    };
+
+    const options = {
+        page: req.params.page || 1,
+        limit: 20,
+        collation: {
+          locale: 'pt'
+        },
+        sort: {createdAt: -1},
+        customLabels: myCustomLabels
+    };
+
+    Font.paginate({ published: true }, options, function(err, result) {
+        if (err) {
+            return next(err);
+        }
+        else{
+            res.send(result);
+        }
+    });
+};
+
+// Publish a font by the id in the request
+exports.publishFont = (req, res) => {
+    if (!req.body) {
+        return res.status(400).send({
+          message: "Data to update can not be empty!"
+        });
+    }
+
+    const id = req.params.id;
+
+    Font.findOneAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
-            res.send(data);
+        if (data.length == 0) {
+            res.status(404).send({
+            message: `Cannot update font with id=${id}. Maybe font was not found!`
+            });
+        } else res.send({ message: "font was updated successfully." });
         })
         .catch(err => {
         res.status(500).send({
-            message:
-            err.message || "Some error occurred while retrieving fonts."
+            message: "Error updating font with id=" + id
         });
+    });
+};
+
+// Find all Unpublished font
+exports.findUnpublished = (req, res) => {
+
+    const myCustomLabels = {
+        totalDocs: 'totalFonts',
+        docs: 'data',
+        limit: 'limit',
+        page: 'currentPage',
+        nextPage: 'next',
+        prevPage: 'prev',
+        totalPages: 'totalPages',
+        pagingCounter: 'pagingCounter',
+        //meta: 'paginator'
+    };
+
+    const options = {
+        page: req.params.page || 1,
+        limit: 20,
+        collation: {
+          locale: 'pt'
+        },
+        sort: {createdAt: -1},
+        customLabels: myCustomLabels
+    };
+
+    Font.paginate({ published: false }, options, function(err, result) {
+        if (err) {
+            return next(err);
+        }
+        else{
+            res.send(result);
+        }
     });
 };

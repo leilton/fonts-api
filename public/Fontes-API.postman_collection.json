@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "caa0723b-224a-4e91-9846-690a998277fb",
+		"name": "Fontes-API",
+		"description": "Api de Atualizaçção de Fontes dos desenvolvedores da Asa Branca",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Font",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"PJ000010\",\n\t\"description\": \"fonte para DI AA44DD\",\n\t\"environment\": \"Producao\",\n\t\"user\": \"Erick Rittir\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fonts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Fonts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/fonts/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Published Fonts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/fonts/font/published/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"font",
+						"published",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unpublished Fonts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/fonts/font/unpublished/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"font",
+						"unpublished",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One Font by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fonts/font/60b788c652d3f6392011bd40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"font",
+						"60b788c652d3f6392011bd40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete by Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fonts/5ec298c408cbb53e648050dd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"5ec298c408cbb53e648050dd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fonts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update by Id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"environment\": \"Produção e Schedule 01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fonts/5ec298c408cbb53e648050dd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"5ec298c408cbb53e648050dd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publish by Id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"published\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fonts/publish/60b788c652d3f6392011bd40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"publish",
+						"60b788c652d3f6392011bd40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One Font by Title",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fonts/font/title/PJ000010",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fonts",
+						"font",
+						"title",
+						"PJ000010"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
