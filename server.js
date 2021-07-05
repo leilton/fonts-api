@@ -8,7 +8,8 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -23,7 +24,7 @@ db.mongoose
     useUnifiedTopology: true
   })
   .then(() => {
-    //console.log("Connected to the database!");
+    console.log("Connected to the database!");
   })
   .catch(err => {
     console.log("Cannot connect to the database!", err);

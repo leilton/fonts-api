@@ -1,4 +1,6 @@
+const { isValidObjectId } = require("mongoose");
 const db = require("../models");
+const os = require('os');
 const Font = db.fonts;
 
 // Create and Save a new font
@@ -16,10 +18,10 @@ exports.create = (req, res) => {
         published: req.body.published ? req.body.published : false,
         publishDate: req.body.publishDate,
         environment: req.body.environment,
-        user: req.body.user
+        user: os.userInfo().username
     });
-    
-    // Save font in the database
+
+    //Save font in the database
     font.save(font)
         .then(data => {
             res.send(data);
@@ -36,15 +38,35 @@ exports.create = (req, res) => {
 exports.findTitle = (req, res) => {
     const title = req.params.title;
 
-    Font.find({ title: title })
-        .then(data => {
-            if (data.length == 0) res.status(404).send({ message: "Not found font with title " + title });
-            else res.send(data);
-        })
-        .catch(err => {
-        res
-            .status(500)
-            .send({ message: "Error retrieving font with title = " + title });
+    const myCustomLabels = {
+        totalDocs: 'totalFonts',
+        docs: 'data',
+        limit: 'limit',
+        page: 'currentPage',
+        nextPage: 'next',
+        prevPage: 'prev',
+        totalPages: 'totalPages',
+        pagingCounter: 'pagingCounter',
+        //meta: 'paginator'
+    };
+
+    const options = {
+        page: req.params.page || 1,
+        limit: 20,
+        collation: {
+          locale: 'pt'
+        },
+        sort: {createdAt: -1},
+        customLabels: myCustomLabels
+    };
+    title: title
+    Font.paginate({ title: title }, options, function(err, result) {
+        if (err) {
+            return next(err);
+        }
+        else{
+            res.send(result);
+        }
     });
 };
 
@@ -109,8 +131,9 @@ exports.update = (req, res) => {
     }
 
     const id = req.params.id;
+    const filter = { _id : id }
 
-    Font.findOneAndUpdate(id, req.body, { useFindAndModify: false })
+    Font.findOneAndUpdate(filter, req.body, { useFindAndModify: false })
         .then(data => {
         if (data.length == 0) {
             res.status(404).send({
@@ -128,8 +151,8 @@ exports.update = (req, res) => {
 // Delete a font with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
-
-    Font.findOneAndRemove(id)
+    const filter = { _id : id }
+    Font.findOneAndRemove(filter)
         .then(data => {
         if (data.length == 0) {
             res.status(404).send({
@@ -208,8 +231,10 @@ exports.publishFont = (req, res) => {
     }
 
     const id = req.params.id;
+    const filter = { _id : id }
+    const update = req.body;
 
-    Font.findOneAndUpdate(id, req.body, { useFindAndModify: false })
+    Font.findByIdAndUpdate( filter, update , { useFindAndModify: false } )
         .then(data => {
         if (data.length == 0) {
             res.status(404).send({
