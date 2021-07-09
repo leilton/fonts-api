@@ -51,23 +51,24 @@ exports.findTitle = (req, res) => {
     };
 
     const options = {
-        page: req.params.page || 1,
-        limit: 20,
-        collation: {
-          locale: 'pt'
-        },
-        sort: {createdAt: -1},
-        customLabels: myCustomLabels
+        //page: req.params.page || 1,
+        //limit: 20,
+        //collation: {
+         // locale: 'pt'
+        //},
+        sort: {createdAt: -1}
+        //customLabels: myCustomLabels
     };
     title: title
-    Font.paginate({ title: title }, options, function(err, result) {
+    Font.find({ title: title }, {}, function(err, result) {
+    //Font.paginate({ title: title }, options, function(err, result) {
         if (err) {
             return next(err);
         }
         else{
             res.send(result);
         }
-    });
+    }).sort({createdAt : -1});
 };
 
 // Retrieve all font from the database.
@@ -95,14 +96,14 @@ exports.findAll = (req, res) => {
         customLabels: myCustomLabels
     };
  
-    Font.paginate({}, options, function(err, result) {
+    Font.find({}, {}, function(err, result) {
         if (err) {
             return next(err);
         }
         else{
             res.send(result);
         }
-    });
+    }).sort({createdAt : -1});
 };
 
 // Find a single font with an id
@@ -212,14 +213,15 @@ exports.findPublished = (req, res) => {
         customLabels: myCustomLabels
     };
 
-    Font.paginate({ published: true }, options, function(err, result) {
+    Font.find({published: true}, {}, function(err, result) {
+    //Font.paginate({ published: true }, options, function(err, result) {
         if (err) {
             return next(err);
         }
         else{
             res.send(result);
         }
-    });
+    }).sort({createdAt : -1});
 };
 
 // Publish a font by the id in the request
@@ -274,12 +276,13 @@ exports.findUnpublished = (req, res) => {
         customLabels: myCustomLabels
     };
 
-    Font.paginate({ published: false }, options, function(err, result) {
+    Font.find({published: false}, {}, function(err, result) {
+    //Font.paginate({ published: false }, options, function(err, result) {
         if (err) {
             return next(err);
         }
         else{
             res.send(result);
         }
-    });
+    }).sort({createdAt : -1});
 };
