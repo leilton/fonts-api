@@ -18,7 +18,7 @@ exports.create = (req, res) => {
         published: req.body.published ? req.body.published : false,
         publishDate: req.body.publishDate,
         environment: req.body.environment,
-        user: os.userInfo().username
+        user: req.body.user
     });
 
     //Save font in the database
