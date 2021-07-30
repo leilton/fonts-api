@@ -7,7 +7,12 @@ const Font = db.fonts;
 exports.create = (req, res) => {
     // Validate request
     if (!req.body.title) {
-        res.status(400).send({ message: "Content can not be empty!" });
+        res.status(400).send({ message: "Título não pode ficar vazio!" });
+        return;
+    }
+
+    if (!req.body.user) {
+        res.status(400).send({ message: "Usuário não pode ficar vazio!" });
         return;
     }
 
@@ -29,7 +34,7 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
             message:
-                err.message || "Some error occurred while creating the font."
+                err.message || "Um erro ocorreu ao criar o Recurso."
             });
         });
 };
@@ -113,13 +118,13 @@ exports.findOne = (req, res) => {
     Font.findById(id)
         .then(data => {
         if (data.length == 0)
-            res.status(404).send({ message: "Not found font with id " + id });
+            res.status(404).send({ message: "Recurso não encontrado com o id " + id });
         else res.send(data);
         })
         .catch(err => {
         res
             .status(500)
-            .send({ message: "Error retrieving font with id=" + id });
+            .send({ message: "Erro ao recuperar Recurso com o ID = " + id });
     });
 };
 
@@ -138,13 +143,13 @@ exports.update = (req, res) => {
         .then(data => {
         if (data.length == 0) {
             res.status(404).send({
-            message: `Cannot update font with id=${id}. Maybe font was not found!`
+            message: `Não é possível atualizar a Recurso com id=${id}. Talvez o recurso não tenha sido encontrada!!`
             });
-        } else res.send({ message: "font was updated successfully." });
+        } else res.send({ message: "Recurso foi atualizado com sucesso. " });
         })
         .catch(err => {
         res.status(500).send({
-            message: "Error updating font with id=" + id
+            message: "Erro ao atualizar fonte com id=" + id
         });
     });
 };
@@ -157,17 +162,17 @@ exports.delete = (req, res) => {
         .then(data => {
         if (data.length == 0) {
             res.status(404).send({
-            message: `Cannot delete font with id=${id}. Maybe font was not found!`
+            message: `Não é possível deletar Recurso com id =${id}. Talvez o recurso não tenha sido encontrada!!`
             });
         } else {
             res.send({
-            message: "font was deleted successfully!"
+            message: "Recurso foi deletado com sucesso. "
             });
         }
         })
         .catch(err => {
         res.status(500).send({
-            message: "Could not delete font with id=" + id
+            message: "Erro ao deletar fonte com id=" + id
         });
     });
 };
@@ -177,13 +182,13 @@ exports.deleteAll = (req, res) => {
     Font.deleteMany({})
         .then(data => {
         res.send({
-            message: `${data.deletedCount} fonts were deleted successfully!`
+            message: `${data.deletedCount} Recursos foram deletados com sucesso!`
         });
         })
         .catch(err => {
         res.status(500).send({
             message:
-            err.message || "Some error occurred while removing all fonts."
+            err.message || "Ocorreu algum erro ao remover todas os recursos. "
         });
     });
 };
@@ -228,7 +233,7 @@ exports.findPublished = (req, res) => {
 exports.publishFont = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
-          message: "Data to update can not be empty!"
+          message: "Os dados a serem atualizados não podem estar vazios! "
         });
     }
 
@@ -240,13 +245,13 @@ exports.publishFont = (req, res) => {
         .then(data => {
         if (data.length == 0) {
             res.status(404).send({
-            message: `Cannot update font with id=${id}. Maybe font was not found!`
+            message: `Não é possível atualizar o recurso com id =${id}. Talvez o recurso não tenha sido encontrado !`
             });
-        } else res.send({ message: "font was updated successfully." });
+        } else res.send({ message: "Recurso foi atualizado com sucesso. " });
         })
         .catch(err => {
         res.status(500).send({
-            message: "Error updating font with id=" + id
+            message: "Erro ao atualizar fonte com id=" + id
         });
     });
 };
